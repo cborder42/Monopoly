@@ -2,6 +2,7 @@ public class Player {
     private int bal; 
     private int pos; 
     private int numOfRailroads; 
+    private int numOfUtilitiesOwned;
 
     public Player(){
         //each player starts with $1500
@@ -45,6 +46,14 @@ public class Player {
 
     public int getNumOfRailraods(){
         return numOfRailroads;
+    }
+    
+    public void changeNumOfUtilitie(int change){
+        numOfUtilitiesOwned += change;
+    }
+    
+    public int getNumOfUtilities(){
+        return numOfUtilitiesOwned;
     }
 
     //status if game is lost 
