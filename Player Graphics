@@ -1,0 +1,95 @@
+import java.awt.*;
+
+import javax.swing.JFrame;
+
+
+
+public class DisplayGraphics extends Canvas {
+
+
+
+public void paint(Graphics g) {
+
+g.drawString("free parking", 20, 20);
+
+setBackground(Color.WHITE);
+
+setForeground(Color.BLUE);
+
+g.drawRect(120, 120, 630, 630);
+
+
+g.drawRect(0, 120, 120, 70);   //1
+g.drawRect(0, 190, 120, 70);   //2
+g.drawRect(0, 260, 120, 70);   //3
+g.drawRect(0, 330, 120, 70);   //4
+g.drawRect(0, 400, 120, 70);   //5
+g.drawRect(0, 470, 120, 70);   //6
+g.drawRect(0, 540, 120, 70);   //7
+g.drawRect(0, 610, 120, 70);   //8
+g.drawRect(0, 680, 120, 70);   //9   750 + 120 + 120 = 990
+
+
+g.drawRect(0,0, 120, 120); // top left corner
+
+g.drawRect(120,0,70, 120);
+g.drawRect(190,0,70, 120);
+g.drawRect(260,0,70, 120);
+g.drawRect(330,0,70, 120);
+g.drawRect(400,0,70, 120);
+g.drawRect(470,0,70, 120);
+g.drawRect(540,0,70, 120);
+g.drawRect(610,0,70, 120);
+g.drawRect(680,0,70, 120);
+
+g.drawRect(750,0, 120, 120); // top right corner
+
+g.drawRect(750, 120, 120, 70);   //1
+g.drawRect(750, 190, 120, 70);   //2
+g.drawRect(750, 260, 120, 70);   //3
+g.drawRect(750, 330, 120, 70);   //4
+g.drawRect(750, 400, 120, 70);   //5
+g.drawRect(750, 470, 120, 70);   //6
+g.drawRect(750, 540, 120, 70);   //7
+g.drawRect(750, 610, 120, 70);   //8
+g.drawRect(750, 680, 120, 70);
+
+g.drawRect(750,750, 120, 120); // bottom right corner
+
+g.drawRect(120,750,70, 120);
+g.drawRect(190,750,70, 120);
+g.drawRect(260,750,70, 120);
+g.drawRect(330,750,70, 120);
+g.drawRect(400,750,70, 120);
+g.drawRect(470,750,70, 120);
+g.drawRect(540,750,70, 120);
+g.drawRect(610,750,70, 120);
+g.drawRect(680,750,70, 120);
+
+g.drawRect(0, 750, 120, 120); // bottom left corner
+
+g.drawRect(0,0,870,870); // whole dimension
+
+g.drawOval(45, 45, 30, 30);
+g.drawRect(140, 45, 30, 30);
+g.drawPolygon(new int[] {10, 20, 30}, new int[] {100, 20, 100}, 3);
+
+
+
+}
+
+    public static void main(String[] args){
+
+        DisplayGraphics m = new DisplayGraphics();
+
+        JFrame f = new JFrame();
+
+        f.add(m);
+
+        f.setSize(800,800);
+
+        f.setVisible(true);
+
+    }
+
+}
