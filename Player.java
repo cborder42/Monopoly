@@ -1,6 +1,7 @@
 public class Player {
     private int bal; 
     private int pos; 
+    private int numOfRailroads; 
 
     public Player(){
         //each player starts with $1500
@@ -38,11 +39,23 @@ public class Player {
         pos %= 40;
     }
 
+    public void changeNumOfRailRoads(int change){
+        numOfRailroads += change; 
+    }
+
+    public int getNumOfRailraods(){
+        return numOfRailroads;
+    }
+
     //status if game is lost 
     public boolean getLost(){
         if (bal <= 0){
             return true;
         }
         return false;
+    }
+
+    public String toString(int i){
+        return "Player" + i + " ";
     }
 }
