@@ -22,14 +22,14 @@ public class Chance{
    
    }
    
-   public static int getMoney(){
+   public int getMoney(){
       return money;
    }
-   public static boolean getRecieve(){
+   public boolean getRecieve(){
       return recieve;
    }
    public String toString(){
-      return "Name: " + n + "Jail involved?: " + jail + "How much money involved: " + money + "Advance?: " + advance + "Recieve the money?: " + recieve + "Where do you go?: " + whereGo + "Is it a community card: " + community;
+      return "Name: " + name + "Jail involved?: " + goJail + "How much money involved: " + money + "Advance?: " + advance + "Recieve the money?: " + recieve + "Where do you go?: " + whereGo + "Is it a community card: " + community;
    
    }
    
