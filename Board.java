@@ -1,5 +1,5 @@
 public class Board {
-    private Property[] board; 
+    public Property[] board; 
     public Board(){
         board = new Property[] {
             new Property("Go", false, false, false, false, false), 
