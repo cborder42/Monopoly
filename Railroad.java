@@ -3,12 +3,6 @@
 
 
 
-
-
-
-
-
-
 import java.io.*;
 
 import java.util.Scanner;
@@ -18,16 +12,22 @@ public class Railroad{
    private int rent;
    private static boolean owned;
    private int cost;
+   private int mortgageV;
 
    public Railroad(String name){
       cost = 200;
       rent = 25;
       owned = false;
+      mortgageV = 100;
    }
    
    
    public int getCost(){
       return cost;
+   
+   }
+   public int getCost(int n){//n is number of properties owned
+      return cost*n;
    
    }
    public static boolean alrOwned(){
@@ -43,10 +43,6 @@ public class Railroad{
    }
    
 }
-
-
-
-
 
 
 
