@@ -370,6 +370,7 @@ g.drawString("MONOPOLY", 175, 440);
 g.setColor(Color.BLACK);
 g.drawRect(145, 360, 580, 100);
 
+//Player Graphics
 g.setColor(Color.RED);
 
 g.fillOval(770,800,50,20);
