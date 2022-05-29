@@ -14,11 +14,12 @@ public class Player {
         return bal;
     }
     
-    // will affect the balance, increasing or decreasing the amount of money available to the players based on their actions 
+    // will affect the balance increasing the amount of money available to the players based on their actions 
     public void addBal(int change){
         bal += change; 
     }
 
+    // will affect the balance, decreasing the amount of money available to the player based on their actions
     public void subBal(int change){
         bal -= change;
     }
