@@ -16,11 +16,11 @@ public class Player {
     
     // will affect the balance, increasing or decreasing the amount of money available to the players based on their actions 
     public void addBal(int change){
-        bal += x; 
+        bal += change; 
     }
 
     public void subBal(int change){
-        bal -= x;
+        bal -= change;
     }
 
     // Will tell the user if they can pay the charged price 
