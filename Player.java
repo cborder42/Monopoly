@@ -60,7 +60,7 @@ public class Player {
             buyProperty(property);
         } else if (property.owner != this) {
             payRentOnProperty(property, board);
-        } else if (property.owner == this && property.isProperty && property.houses < property.rents.length) {
+        } else if (property.owner == this && property.isProperty && property.houses < property.rents.length - 1) {
             // Check if interested in building
             int cost = property.houseCost;
             if (cost > 0 && getCanPay(cost)) {

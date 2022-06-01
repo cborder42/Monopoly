@@ -1,5 +1,9 @@
 import java.util.*;
+import javax.swing.JFrame;
+
 public class Game{
+    private DisplayGraphics graphics;
+    private JFrame frame;
     private Board board = new Board();
     private ArrayList<Player> listOfPlayers = new ArrayList<Player>(); 
     private Scanner in = new Scanner(System.in);
@@ -10,6 +14,12 @@ public class Game{
     }
 
     public Game() {
+        graphics = new DisplayGraphics();
+        frame = new JFrame();
+        frame.add(graphics);
+        frame.setSize(880,910);
+        frame.setVisible(true);
+
         setupPlayers();
     }
 
@@ -24,6 +34,9 @@ public class Game{
             int dice = rollDice();
             player.makeMove(board, dice);
         }
+
+        // close the window
+        frame.dispose();
     }
     
     // Each player in turn throws the dice. The player with the highest total starts the play. 
