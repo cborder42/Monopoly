@@ -1,9 +1,12 @@
+import java.util.*;
+
 public class Player {
     private int id;
     private int bal; 
     private int pos; 
     private int numOfRailroads; 
     private int numOfUtilitiesOwned;
+    private Scanner in = new Scanner(System.in);
 
     public Player(int id){
         //each player starts with $1500
@@ -57,7 +60,11 @@ public class Player {
 
     private void processProperty(Property property, Board board) {
         if (property.owner == null) {
-            buyProperty(property);
+            System.out.println(this.toString() + ", do you want to buy this property? Cost: " + property.cost + "(y or n)");
+            String ans = in.nextLine();  
+            if (ans.equals("y")){
+                buyProperty(property);
+            }
         } else if (property.owner != this) {
             payRentOnProperty(property, board);
         } else if (property.owner == this && property.isProperty && property.houses < property.rents.length - 1) {

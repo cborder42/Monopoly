@@ -19,7 +19,7 @@ public class Game{
         frame.add(graphics);
         frame.setSize(880,910);
         frame.setLocation(20, 20);
-        //// frame.setUndecorated(true);
+        //// frame.setUndecorated(true); and set height to 880 above.
         frame.setVisible(true);
 
         setupPlayers();
