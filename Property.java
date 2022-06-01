@@ -5,8 +5,8 @@ public class Property {
     public int houses;
     public int mortgage;
     public int houseCost;
-    public int ownerIndex;
     public boolean owned;
+    public Player owner;
     public boolean isChance;
     public boolean isCommunityChest;
     public boolean isUtility;
@@ -14,9 +14,9 @@ public class Property {
     public boolean isProperty; 
     public int[] rents = new int[6];
     public int[] railroadRent = new int[4];
-    
 
-    
+
+
 
     //constructor
     public Property(String propertyName, int propertyCost, int propertyMortgage, int propertyHouseCost, int[] propertyRents, boolean isChanceProperty, boolean isCommunityChestProperty, boolean isRailroadProperty, boolean isUtilityProperty, boolean isAProperty){
@@ -25,12 +25,13 @@ public class Property {
         houses = 0;
         mortgage = propertyMortgage;
         houseCost = propertyHouseCost;
-        ownerIndex = -1;
         owned = false;
+        owner = null;
+        isProperty = isAProperty;
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
         rents = propertyRents.clone();
-
+        
     }
     //free parking and other spaces like that
     public Property(String propertyName, boolean isChanceProperty, boolean isCommunityChestProperty, boolean isRailroadProperty, boolean isUtilityProperty, boolean isAProperty){
@@ -69,9 +70,13 @@ public class Property {
         return rents[houses]; 
     }
     
-    //make a payment for railraods, with a rent array same as properties.
+    //make a payment for railroads, with a rent array same as properties.
     public int getRailroadPayment(){
-        return railroadRent[currentPlayer].numOfRailroads]; 
+        if (owner != null) {
+            return railroadRent[owner.getNumOfRailraods()];
+        } else {
+            return 0;
+        }
     }
 
     public String toString(){
@@ -79,6 +84,3 @@ public class Property {
     }
     
 }
-
-
-
