@@ -4,7 +4,7 @@ import java.awt.Font;
 import javax.swing.*;
 import java.awt.geom.*;
 import java.awt.Graphics2D;
-import java.awt.Graphics;
+import java.awt.Graphics; 
 import javax.swing.JLabel;
 
 
@@ -15,7 +15,7 @@ public class DisplayGraphics extends Canvas {
 public void paint(Graphics g) {
 
 
-Font f1 = new Font("GO SIGN",1,70);
+Font f1 = new Font("GO SIGN",1,70); 
 Font f2 = new Font("IN JAIL", 1,30);
 Font f3 = new Font("VISITING", 1,15);
 Font f4 = new Font("side squares", 1,10);
@@ -46,7 +46,7 @@ g.drawString("$200", 50, 185);
 g.setColor(Color.BLACK);
 g.drawRect(0, 190, 120, 70);   //2
 g.setColor(Color.ORANGE);
-g.fillRect(0, 190, 120, 20);
+g.fillRect(0, 190, 120, 20); 
 g.setColor(Color.BLACK);
 g.drawString("TENNESSEE AVENUE", 5, 220);
 g.drawString("$180", 50, 255);
@@ -82,7 +82,7 @@ g.drawString("$160", 50, 535);
 g.setColor(Color.BLACK);
 g.drawRect(0, 540, 120, 70);   //7
 g.setColor(Color.decode("#FF007F"));
-g.fillRect(0, 540, 120, 20);
+g.fillRect(0, 540, 120, 20); 
 g.setColor(Color.BLACK);
 g.drawString("STATES AVENUE", 20, 570);
 g.drawString("$140", 50, 605);
@@ -94,7 +94,7 @@ g.drawString("$150", 50, 675);
 
 
 g.setColor(Color.BLACK);
-g.drawRect(0, 680, 120, 70);   //9  
+g.drawRect(0, 680, 120, 70);   //9   
 g.setColor(Color.decode("#FF007F"));
 g.fillRect(0, 680, 120, 20);
 g.setColor(Color.BLACK);
@@ -104,14 +104,14 @@ g.drawString("$140", 50, 745);
 
 
 
-// FREE PARKING
+// FREE PARKING 
 g.setFont(f5);
 g.setColor(Color.BLACK);
 g.drawRect(0,0, 120, 120); // top left corner
 g.drawString("FREE PARKING", 2, 60);
 
 
-// TOP ROW
+// TOP ROW 
 // FREE PARKING to GO TO JAIL
 g.setFont(f4);
 
@@ -211,7 +211,7 @@ g.drawString("$300", 800, 185);
 g.setColor(Color.BLACK);
 g.drawRect(750, 190, 120, 70);   //2
 g.setColor(Color.decode("#006400"));
-g.fillRect(750, 190, 120, 20);
+g.fillRect(750, 190, 120, 20); 
 g.setColor(Color.BLACK);
 g.drawString("NORTH CAROLINA", 765, 220);
 g.drawString("AVENUE", 790, 230);
@@ -225,7 +225,7 @@ g.drawString("COMMUNITY CHEST", 760, 280);
 g.setColor(Color.BLACK);
 g.drawRect(750, 330, 120, 70);   //4
 g.setColor(Color.decode("#006400"));
-g.fillRect(750, 330, 120, 20);
+g.fillRect(750, 330, 120, 20); 
 g.setColor(Color.BLACK);
 g.drawString("PENNSYLVANIA AVENUE", 751, 360);
 g.drawString("$320", 800, 395);
@@ -355,7 +355,7 @@ g.drawString("$60", 708, 865);
 
 
 g.setColor(Color.BLACK);
-g.drawRect(0, 750, 120, 120); // bottom left corner
+g.drawRect(0, 750, 120, 120); // bottom left corner 
 g.drawRect(30,750,90,90);
 
 // BOTTOM LEFT CORNER TEXT
@@ -386,7 +386,6 @@ g.setColor(Color.YELLOW);
 
 g.fillRect(835,810,30,50);
 }
-
 
 
     public static void main(String[] args){
