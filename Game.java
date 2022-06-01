@@ -18,6 +18,8 @@ public class Game{
         frame = new JFrame();
         frame.add(graphics);
         frame.setSize(880,910);
+        frame.setLocation(20, 20);
+        //// frame.setUndecorated(true);
         frame.setVisible(true);
 
         setupPlayers();
