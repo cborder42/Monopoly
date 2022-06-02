@@ -6,6 +6,7 @@ public class Property {
     public int mortgage;
     public int houseCost;
     public int ownerIndex;
+    public Player owner;
     public boolean owned;
     public boolean isChance;
     public boolean isCommunityChest;
@@ -30,6 +31,7 @@ public class Property {
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
         ownerIndex = -1;
+        owner = null;
         isProperty = isAProperty;
         isRailroad = isRailroadProperty;
         isUtility = isUtilityProperty;
@@ -86,8 +88,17 @@ public class Property {
     }
     
     //make a payment for railraods, with a rent array same as properties.
-    public int getRailroadPayment(int numOfRailroadsOwned){
-        return railroadRent[numOfRailroadsOwned]; 
+    // public int getRailroadPayment(int numOfRailroadsOwned){
+    //     return railroadRent[numOfRailroadsOwned]; 
+    // }
+
+    //make a payment for railroads, with a rent array same as properties.
+    public int getRailroadPayment(){
+        if (owner != null) {
+            return railroadRent[owner.getNumOfRailraods()];
+        } else {
+            return 0;
+        }
     }
 
     public void changeOwned(int playerIndex){
@@ -104,7 +115,6 @@ public class Property {
     }
     
 }
-
 
 
 
