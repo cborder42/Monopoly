@@ -1,4 +1,5 @@
 public class Board {
+    public static int jailPos = 10;
     public Property[] board; 
     public Board(){
         board = new Property[] {
@@ -7,7 +8,7 @@ public class Board {
             new Property("Community Chest", false, true, false, false, false),
             new Property("Baltic Avenue", 60, 30, 50, new int[] {4, 20, 60, 180, 320, 450}, false, false, false, false, true),
             new Property("Tax", false, false, false, false, false),
-            new Property("Reading Railroad", 200, 100, new int[] {25, 50, 100, 200}, false, false, true, false, false),
+            new Property("Reading Railroad", 200, 100, new int[] {25, 50, 100, 200}, false, false, true, false, true),
             new Property("Oriental Avenue", 100, 50, 50, new int[] {6, 30, 90, 270, 400, 550}, false, false, false, false, true),
             new Property("Chance", true, false, false, false, false),
             new Property("Vermont Avenue", 100, 50, 50, new int[] {6, 30, 90, 270, 400, 550}, false, false, false, false, true),
@@ -48,6 +49,23 @@ public class Board {
 
 
         };
+    }
+    // public void changeOwned(){
+    //     if(getProperty(currentPlayer.position).owned == false){
+    //         board[currentPlayer.position].owned = true;
+    //         board[currentPlayer.position].ownerIndex = currentPlayer.index;
+    //     }
+
+    // }
+    // public void changeNumHouses(){
+    //     if(board[currentPlayer.position].houses < 5){
+    //         board[currentPlayer.position].houses += 1;
+    //     }
+        
+    // }
+
+    public Property[] getBoard(){
+        return board;
     }
     public Property getProperty(int position){
         return board[position % board.length];
