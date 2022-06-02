@@ -148,7 +148,11 @@ public class Player {
             System.out.println(this.toStringWithDetails() + " Tax $200");
         } else if (property.name.equals("Go To Jail")) {
             System.out.println(toStringWithDetails() + " JAIL");
+            subBal(50);
             setPos(10);
+        } else if (property.name.equals("Jail")){
+            System.out.println(this.toStringWithDetails() + " JAIL");
+            subBal(50);
         } else if (property.isChance) {
             // TODO: Select chance card and take action.
         }
