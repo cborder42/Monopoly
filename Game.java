@@ -1,3 +1,6 @@
+// Kaustav Mitra
+// Game class to stitch all the components together.
+
 import java.util.*;
 import javax.swing.JFrame;
 
@@ -6,7 +9,6 @@ public class Game{
     private JFrame frame;
     private Board board = new Board();
     private ArrayList<Player> listOfPlayers = new ArrayList<Player>(); 
-    private Scanner in = new Scanner(System.in);
 
     public static void main (String[] args){
         Game game = new Game();
@@ -17,9 +19,9 @@ public class Game{
         graphics = new DisplayGraphics();
         frame = new JFrame();
         frame.add(graphics);
-        frame.setSize(880,910);
-        frame.setLocation(20, 20);
-        //// frame.setUndecorated(true); and set height to 880 above.
+        frame.setSize(870,870);
+        frame.setLocationRelativeTo(null);
+        frame.setUndecorated(true);
         frame.setVisible(true);
 
         setupPlayers();
@@ -67,7 +69,7 @@ public class Game{
         }
 
         if (activePlayer == player) {
-            System.out.println(player.toString() + " has won");
+            new AskInput(player.toString() + " has won", new String[] { "Goodbye!" });
             player = null;
         }
 
@@ -75,20 +77,8 @@ public class Game{
     }
 
     private void setupPlayers(){
-        int numOfPlayers = 0;
-        boolean done = false;
-        while (!done) {
-            System.out.print("How many players are playing? ");
-            numOfPlayers= in.nextInt();
-            if (numOfPlayers > 4){
-                System.out.println("Too many players. At most 4.");
-            } else if (numOfPlayers < 2) {
-                System.out.println("Too few players. At least 2.");
-            } else {
-                done = true;
-            }
-        }
-
+        String s = new AskInput("How many players?", new String[] { "2", "3", "4"}).getSelection();
+        int numOfPlayers = Integer.parseInt(s);
         for (int i = 0; i < numOfPlayers; i++){
             listOfPlayers.add(new Player(i));
         }

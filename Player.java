@@ -1,4 +1,5 @@
-import java.util.*;
+// Kaustav Mitra
+// Player class to keep track of a player in the game.
 
 public class Player {
     private int id;
@@ -6,7 +7,6 @@ public class Player {
     private int pos; 
     private int numOfRailroads; 
     private int numOfUtilitiesOwned;
-    private Scanner in = new Scanner(System.in);
 
     public Player(int id){
         //each player starts with $1500
@@ -42,6 +42,10 @@ public class Player {
         return pos; 
     }
 
+    public int getScreenX() {
+        return 0;
+    }
+
     // Move dice positions forward
     public void makeMove(Board board, int dice){
         int oldPos = getPos();
@@ -60,11 +64,7 @@ public class Player {
 
     private void processProperty(Property property, Board board) {
         if (property.owner == null) {
-            System.out.println(this.toString() + ", do you want to buy this property? Cost: " + property.cost + "(y or n)");
-            String ans = in.nextLine();  
-            if (ans.equals("y")){
-                buyProperty(property);
-            }
+            buyProperty(property);
         } else if (property.owner != this) {
             payRentOnProperty(property, board);
         } else if (property.owner == this && property.isProperty && property.houses < property.rents.length - 1) {

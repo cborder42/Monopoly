@@ -20,7 +20,7 @@ public class ChanceCards{
              new Chance("Pay hospital fee", false, 50, false, false, "", true),
              new Chance("You are assessed for street repair", false, 100, false, false, "", true),
              new Chance("You won a second prize in a beauty contest", false, 10, false, true, "", true)
-        }
+        };
     }
 
 
