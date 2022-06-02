@@ -5,8 +5,8 @@ public class Property {
     public int houses;
     public int mortgage;
     public int houseCost;
+    public int ownerIndex;
     public boolean owned;
-    public Player owner;
     public boolean isChance;
     public boolean isCommunityChest;
     public boolean isUtility;
@@ -14,9 +14,9 @@ public class Property {
     public boolean isProperty; 
     public int[] rents = new int[6];
     public int[] railroadRent = new int[4];
+    
 
-
-
+    
 
     //constructor
     public Property(String propertyName, int propertyCost, int propertyMortgage, int propertyHouseCost, int[] propertyRents, boolean isChanceProperty, boolean isCommunityChestProperty, boolean isRailroadProperty, boolean isUtilityProperty, boolean isAProperty){
@@ -25,19 +25,25 @@ public class Property {
         houses = 0;
         mortgage = propertyMortgage;
         houseCost = propertyHouseCost;
+        ownerIndex = -1;
         owned = false;
-        owner = null;
-        isProperty = isAProperty;
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
+        ownerIndex = -1;
+        isProperty = isAProperty;
+        isRailroad = isRailroadProperty;
+        isUtility = isUtilityProperty;
         rents = propertyRents.clone();
-        
+
     }
     //free parking and other spaces like that
     public Property(String propertyName, boolean isChanceProperty, boolean isCommunityChestProperty, boolean isRailroadProperty, boolean isUtilityProperty, boolean isAProperty){
         name = propertyName;
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
+        isProperty = isAProperty;
+        isRailroad = isRailroadProperty;
+        isUtility = isUtilityProperty;
     }
     //railroads
     public Property(String propertyName, int propertyCost, int railroadMortgage, int[] railroadRents, boolean isChanceProperty, boolean isCommunityChestProperty, boolean isRailroadProperty, boolean isUtilityProperty, boolean isAProperty){
@@ -46,7 +52,11 @@ public class Property {
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
         mortgage = railroadMortgage;
+        ownerIndex = -1;
+        isProperty = isAProperty;
         railroadRent = railroadRents.clone();
+        isRailroad = isRailroadProperty;
+        isUtility = isUtilityProperty;
     }
     //utilities
     public Property(String propertyName, int propertyCost, int utilityMortgage, boolean isChanceProperty, boolean isCommunityChestProperty, boolean isRailroadProperty, boolean isUtilityProperty, boolean isAProperty){
@@ -55,8 +65,13 @@ public class Property {
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
         isUtility = isUtilityProperty;
+        ownerIndex = -1;
+        isProperty = isAProperty;
+        isRailroad = isRailroadProperty;
         mortgage = utilityMortgage;
     }
+
+    
 
     /***
      * Get payment for this property
@@ -70,17 +85,26 @@ public class Property {
         return rents[houses]; 
     }
     
-    //make a payment for railroads, with a rent array same as properties.
-    public int getRailroadPayment(){
-        if (owner != null) {
-            return railroadRent[owner.getNumOfRailraods()];
-        } else {
-            return 0;
-        }
+    //make a payment for railraods, with a rent array same as properties.
+    public int getRailroadPayment(int numOfRailroadsOwned){
+        return railroadRent[numOfRailroadsOwned]; 
+    }
+
+    public void changeOwned(int playerIndex){
+        owned = true;
+        ownerIndex = playerIndex;
     }
 
     public String toString(){
-        return "Name: " + name +  " | Cost: " + cost +  " | Mortgage: " + mortgage + " | Houses: " + houses + " | House cost: " + houseCost + " | Rent with 0 houses: " + rents[0] + " | Rent with 1 house: " + rents[1]+ " | Rent with 2 houses: " + rents[2] + " | Rent with 3 houses: " + rents[3] + " | Rent with 4 houses: " + rents[4] + " | Rent with a hotel: " + rents[5] + " | Is owned: " + owned + " | Is community chest: " + isCommunityChest + " | Is chance: " + isChance; //+ " Owner: " + players[ownerIndex].name +
+        String propertyDetails = "Name: " + name +  " | Cost: " + cost +  " | Mortgage: " + mortgage + " | Houses: " + houses + " | House cost: " + houseCost + " | Rent with 0 houses: " + rents[0] + " | Rent with 1 house: " + rents[1]+ " | Rent with 2 houses: " + rents[2] + " | Rent with 3 houses: " + rents[3] + " | Rent with 4 houses: " + rents[4] + " | Rent with a hotel: " + rents[5] + " | Is owned: " + owned + " | Is community chest: " + isCommunityChest + " | Is chance: " + isChance; 
+        if (owned){
+            propertyDetails += "Property owner: Player " + ownerIndex;
+        }
+        return propertyDetails;
     }
     
 }
+
+
+
+
