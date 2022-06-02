@@ -1,16 +1,15 @@
 import java.awt.*;
-import javax.swing.JFrame;
 import java.awt.Font;
-import javax.swing.*;
-import java.awt.geom.*;
-import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.awt.Graphics; 
-import javax.swing.JLabel;
-
-
 
 public class DisplayGraphics extends Canvas {
 
+public ArrayList<Player> players = new ArrayList<Player>();
+
+public void setPlayers(ArrayList<Player> players) {
+    this.players = players;
+}
 
 public void paint(Graphics g) {
 
@@ -370,35 +369,32 @@ g.drawString("MONOPOLY", 175, 440);
 g.setColor(Color.BLACK);
 g.drawRect(145, 360, 580, 100);
 
-g.setColor(Color.decode("#FF8A8A"));
-g.fillOval(770,800,40,20);
-g.setColor(Color.GREEN);
-g.fillOval(800, 830, 20, 20);
-g.setColor(Color.BLUE);
-g.fillRect(760, 820, 20, 20);
-g.setColor(Color.MAGENTA);
-g.fillRect(835,810,20,40);
+// Paint the players
 
+int i = 0;
+for(Player player : players) {
+    int bal = player.getBal();
+    if (bal > 0) {
+        Point p = player.getLocation();
+        if (i == 0) {
+            g.setColor(Color.decode("#FF8A8A"));
+            g.fillOval(p.x, p.y,30,20);
+        } else if (i== 1) {
+            g.setColor(Color.GREEN);
+            g.fillOval(p.x, p.y, 20, 20);
+        } else if (i == 2) {
+            g.setColor(Color.BLUE);
+            g.fillRect(p.x, p.y, 20, 20);
+        } else {
+            g.setColor(Color.MAGENTA);
+            g.fillRect(p.x, p.y,20,30);
+        }
 
-
+        g.setFont(f4);
+        g.drawString(player.toString() + ": $" + bal, 650, 650 + i*20);
+    }
+    i++;
 }
 
-
-
-    public static void main(String[] args){
-
-        DisplayGraphics m = new DisplayGraphics();
-
-        JFrame f = new JFrame();
-
-        JPanel p = new JPanel();
-
-        f.add(m);
-
-        f.setSize(800,800);
-
-        f.setVisible(true);
-
-    }
-
+}
 }
