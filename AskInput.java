@@ -12,22 +12,24 @@ public class AskInput extends JFrame {
         return selection;
     }
 
-    public AskInput(String title, String[] buttons) {
+    public AskInput(String title, String[] buttons, Game game) {
         setTitle(title);
-        setSize(300, 100);
+        setSize(300, 40);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
         panel.setVisible(true);
+        panel.setBackground(Color.yellow);
         panel.add(new JLabel(title, SwingConstants.CENTER), BorderLayout.CENTER);
 
         JFrame frame = this;
         setAlwaysOnTop(true);
-        //// setUndecorated(true);
+        setUndecorated(true);
         setVisible(true);
         for (String s: buttons) {
             JRadioButton button = new JRadioButton(s);
+            button.setBackground(Color.YELLOW);
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     selection = e.getActionCommand();
@@ -40,10 +42,7 @@ public class AskInput extends JFrame {
         setVisible(true);
 
         while (selection == null) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
+            game.delay(true);
         }
 
         frame.dispose();

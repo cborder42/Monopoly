@@ -1,6 +1,8 @@
 // Kaustav Mitra
 // Game class to stitch all the components together.
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.*;
 import javax.swing.JFrame;
 
@@ -9,6 +11,8 @@ public class Game{
     private DisplayGraphics graphics;
     private Board board = new Board();
     private ArrayList<Player> listOfPlayers = new ArrayList<Player>(); 
+    private int sleepTime = 1000;
+    private boolean forceEnd = false;
 
     public static void main (String[] args){
         Game game = new Game();
@@ -23,6 +27,31 @@ public class Game{
         frame.setSize(870, 870);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        frame.setFocusable(true);
+        frame.addKeyListener(new KeyListener() {
+            public void keyTyped(KeyEvent e) {
+                char key = e.getKeyChar();
+                if (key == '+') {
+                    System.out.println("KEY: Speeding up.");
+                    sleepTime /= 2;
+                }
+                if (key == '-') {
+                    System.out.println("KEY: Slowing down.");
+                    sleepTime *= 2;
+                }
+                if (key == 'q' || key == 'Q') {
+                    System.out.println("KEY: Quitting game.");
+                    forceEnd = true;
+                }
+            }
+
+            public void keyPressed(KeyEvent e) {
+            }
+
+            public void keyReleased(KeyEvent e) {
+            }
+        });
 
         setupPlayers();
         graphics.setPlayers(listOfPlayers);
@@ -43,20 +72,24 @@ public class Game{
     public void simulation() {
         // Loop and get next player.
         // next player is null when there is a winner (one with money).
-        for (Player player = getFirstPlayer(); player != null; player = getNextPlayer(player)) {
+        for (Player player = getFirstPlayer(); player != null && !forceEnd; player = getNextPlayer(player)) {
             int dice = rollDice();
             player.makeMove(dice);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
-            graphics.invalidate();
+            frame.requestFocusInWindow();
+            delay(true);
         }
 
         // close the window
         frame.dispose();
     }
-    
+
+    public void delay(boolean extended) {
+        try {
+            Thread.sleep(extended ? sleepTime : sleepTime/30);
+        } catch (InterruptedException e) {
+        }
+    }
+
     // Each player in turn throws the dice. The player with the highest total starts the play. 
     private Player getFirstPlayer() {
         Player firstPlayer = null;
@@ -83,7 +116,7 @@ public class Game{
         }
 
         if (activePlayer == player) {
-            new AskInput(player.toString() + " has won", new String[] { "Goodbye!" });
+            new AskInput(player.toString() + " has won", new String[] { "Goodbye!" }, this);
             player = null;
         }
 
@@ -91,7 +124,7 @@ public class Game{
     }
 
     private void setupPlayers(){
-        String s = new AskInput("How many players?", new String[] { "2", "3", "4"}).getSelection();
+        String s = new AskInput("How many players?", new String[] { "2", "3", "4"}, this).getSelection();
         int numOfPlayers = Integer.parseInt(s);
         for (int i = 0; i < numOfPlayers; i++){
             listOfPlayers.add(new Player(i, this));

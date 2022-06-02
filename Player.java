@@ -9,6 +9,7 @@ public class Player {
     private int numOfRailroads; 
     private int numOfUtilitiesOwned;
     private Game game;
+    private boolean auto = false;
 
     public Player(int id, Game game){
         //each player starts with $1500
@@ -93,11 +94,7 @@ public class Player {
         DisplayGraphics graphics = game.getGraphics();
         for (int i = 0; i < dice; i++) {
             setPos((pos + 1) % board.getTotalSpaces());
-
-            try {
-                Thread.sleep(30);
-            } catch (InterruptedException e) {
-            }
+            game.delay(false);
         }
 
         // Repaint current balance area.
@@ -129,10 +126,26 @@ public class Player {
         }
     }
 
+    private boolean askBuy() {
+        if (auto) {
+            return true;
+        }
+
+        String choice = new AskInput(toString(), new String[]{"Buy", "Skip", "Auto"}, game).getSelection();
+        auto = choice.equals("Auto");
+        if (choice.equals("Skip")) {
+            return false;
+        }
+        return true;
+    }
+
     private void buyProperty(Property property) {
         // Check if interested in buying
         int cost = property.cost;
         if (cost > 0 && getCanPay(cost)) {
+            if (!askBuy()) {
+                return;
+            }
             property.owner = this;
             property.owned = true; // Replace to false if mortgage is supported
             subBal(cost);

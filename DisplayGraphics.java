@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.Font;
+import java.awt.geom.*;
 import java.util.ArrayList;
 import java.awt.Graphics; 
 
@@ -363,11 +364,21 @@ g.drawString("JAIL", 42, 805);
 g.setFont(f3);
 g.drawString("VISITING", 30, 865);
 
-g.setFont(f6);
+Polygon redPoly = new Polygon(new int[]{ 0+240-40  , 870-240-40, 870-240+40, 0+240+40  },
+                              new int[]{ 870-240-40, 0+240-40  , 0+240+40  , 870-240+40},
+                              4);
 g.setColor(Color.RED);
-g.drawString("MONOPOLY", 175, 440);
+g.fillPolygon(redPoly);
 g.setColor(Color.BLACK);
-g.drawRect(145, 360, 580, 100);
+g.drawPolygon(redPoly);
+AffineTransform transform = new AffineTransform();
+transform.rotate(Math.toRadians(-45), 0, 0);
+g.setFont(f6.deriveFont(transform));
+g.setColor(Color.BLACK);
+g.drawString("MONOPOLY", 270, 645);
+g.setColor(Color.WHITE);
+g.drawString("MONOPOLY", 275, 645);
+transform.rotate(Math.toRadians(45), 0, 0);
 
 // Paint the players
 
