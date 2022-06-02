@@ -147,6 +147,6 @@ public class Player {
     }
 
     public String toString(){
-        return "Player " + id + " @" + pos + " $" + bal;
+        return "Player " + (id+1) + " @" + pos + " $" + bal;
     }
 }
