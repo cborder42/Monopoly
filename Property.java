@@ -88,30 +88,39 @@ public class Property {
     }
     
     //make a payment for railraods, with a rent array same as properties.
-    // public int getRailroadPayment(int numOfRailroadsOwned){
-    //     return railroadRent[numOfRailroadsOwned]; 
-    // }
+    public int getRailroadPayment(int numOfRailroadsOwned){
+        return railroadRent[numOfRailroadsOwned]; 
+    }
 
     //make a payment for railroads, with a rent array same as properties.
-    public int getRailroadPayment(){
-        if (owner != null) {
-            return railroadRent[owner.getNumOfRailraods()];
-        } else {
-            return 0;
-        }
-    }
+    // public int getRailroadPayment(){
+    //     if (owner != null) {
+    //         return railroadRent[owner.getNumOfRailraods()];
+    //     } else {
+    //         return 0;
+    //     }
+    // }
 
     public void changeOwned(int playerIndex){
         owned = true;
         ownerIndex = playerIndex;
     }
 
+
     public String toString(){
-        String propertyDetails = "Name: " + name +  " | Cost: " + cost +  " | Mortgage: " + mortgage + " | Houses: " + houses + " | House cost: " + houseCost + " | Rent with 0 houses: " + rents[0] + " | Rent with 1 house: " + rents[1]+ " | Rent with 2 houses: " + rents[2] + " | Rent with 3 houses: " + rents[3] + " | Rent with 4 houses: " + rents[4] + " | Rent with a hotel: " + rents[5] + " | Is owned: " + owned + " | Is community chest: " + isCommunityChest + " | Is chance: " + isChance; 
+        String propertyDetails = "Name: " + name +  " | Cost: " + cost +  " | Mortgage: " + mortgage + " | Houses: " + houses + " | House cost: " + houseCost + " | Rent with 0 houses: " + rents[0] + " | Rent with 1 house: " + rents[1]+ " | Rent with 2 houses: " + rents[2] + " | Rent with 3 houses: " + rents[3] + " | Rent with 4 houses: " + rents[4] + " | Rent with a hotel: " + rents[5] + " | Is owned: " + owned; 
         if (owned){
             propertyDetails += "Property owner: Player " + ownerIndex;
         }
         return propertyDetails;
+    }
+    public String railroadToString(){
+        String railroadDetails = "Name: " + name +  " | Cost: " + cost +  " | Mortgage: " + mortgage + " | Rent: " + railroadRent[0] + " | Rent with 2 railroads: " + railroadRent[1] + " | Rent with 3 railroads: " + railroadRent[2] + " | Rent with 4 railroads: " + railroadRent[3];
+        return railroadDetails;
+    }
+    public String utilityToString(){
+        String railroadDetails = "Name: " + name +  " | Cost: " + cost +  " | Mortgage: " + mortgage + " | Rent with just one Utility:  4 times dice roll" + " | Rent with both Utilities owned:  10 times dice roll" ;
+        return railroadDetails;
     }
     
 }
