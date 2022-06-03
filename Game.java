@@ -59,7 +59,7 @@ public class Game{
     }
 
     public int rollDice() {
-        return (int)(Math.random() * 12) + 2;
+        return (int)(Math.random() * 6) + 1;
     }
 
     public DisplayGraphics getGraphics() {
@@ -74,10 +74,25 @@ public class Game{
         // Loop and get next player.
         // next player is null when there is a winner (one with money).
         for (Player player = getFirstPlayer(); player != null && !forceEnd; player = getNextPlayer(player)) {
-            int dice = rollDice();
-            player.makeMove(dice);
-            frame.requestFocusInWindow();
-            delay(true);
+            for (int tries=0; tries<3; tries++){
+                int dice1 = rollDice();
+                int dice2 = rollDice();
+                boolean isDouble = dice1 == dice2;
+                
+                System.out.println(player.toString() + ": turn #" + (tries+1) + " rolled " + dice1 + "+" + dice2);
+                player.makeMove(dice1 + dice2, isDouble);
+                
+                frame.requestFocusInWindow();
+                delay(true);
+
+                if (!isDouble) {
+                    // Break out of loop.
+                    tries=4;
+                } else if (tries == 3) {
+                    System.out.println(player.toString() + " is sent to jail for rolling 3 doubles.");
+                    player.setPos(Board.jailPos);
+                }
+            }
         }
 
         // close the window

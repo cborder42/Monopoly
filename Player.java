@@ -10,6 +10,7 @@ public class Player {
     private int numOfUtilitiesOwned;
     private Game game;
     private boolean auto = false;
+    private int turnsInJail = 0;
 
     public Player(int id, Game game){
         //each player starts with $1500
@@ -34,6 +35,7 @@ public class Player {
 
     // will affect the balance, decreasing the amount of money available to the player based on their actions
     public void subBal(int change){
+        ensureBalance(change);
         bal -= change;
     }
 
@@ -46,7 +48,7 @@ public class Player {
         return pos; 
     }
 
-    private void setPos(int newPos) {
+    public void setPos(int newPos) {
         Point loc = getLocation();
         pos = newPos;
         Point newloc = getLocation();
@@ -88,7 +90,28 @@ public class Player {
     }
 
     // Move dice positions forward
-    public void makeMove(int dice){
+    public void makeMove(int dice, boolean isDouble){
+        if (pos == Board.jailPos) {
+            if (isDouble) {
+                System.out.println(toStringWithDetails() + " Getting out of jail because of double.");
+                turnsInJail = 0;
+            } else if (turnsInJail < 2) {
+                if (!askBuy(toString() + " pay $50 fine?")){
+                    turnsInJail++;
+                    System.out.println(toStringWithDetails() + " missing turn #" + turnsInJail);
+                    return;
+                } else {
+                    subBal(50);
+                    System.out.println(toStringWithDetails() + " exiting jail with paying $50.");
+                    turnsInJail = 0;
+                }
+            } else {
+                subBal(50);
+                System.out.println(toStringWithDetails() + " exiting jail with paying $50.");
+                turnsInJail = 0;
+            }
+        }
+
         int oldPos = getPos();
         Board board = game.getBoard();
         DisplayGraphics graphics = game.getGraphics();
@@ -164,11 +187,9 @@ public class Player {
             System.out.println(this.toStringWithDetails() + " Tax $200");
         } else if (property.name.equals("Go To Jail")) {
             System.out.println(toStringWithDetails() + " JAIL");
-            subBal(50);
-            setPos(10);
+            setPos(Board.jailPos);
         } else if (property.name.equals("Jail")){
             System.out.println(this.toStringWithDetails() + " JAIL");
-            subBal(50);
         } else if (property.isChance || property.isCommunityChest) {
             Chance card = game.cards.advanceCard(property.isChance);
             game.getGraphics().setCard(card.getName(), property.isChance);
@@ -203,6 +224,14 @@ public class Player {
         // Pay rent!!!
         int cost = property.isProperty ? property.getPayment() :
                     property.isRailroad ? property.getRailroadPayment() : 0;
+        subBal(cost);
+        System.out.println(toStringWithDetails() + " RENT " + property.name + " $" + cost);
+        property.owner.addBal(cost);
+        System.out.println(property.owner.toString() + ": COLLECT " + property.name + " $" + cost);
+    }
+
+    // Sell properties to gather enough money.
+    private void ensureBalance(int cost) {
         Board board = game.getBoard();
         for (int i=0; i < board.getTotalSpaces() && cost > bal; i++) {
             Property toSell = board.getProperty(i);
@@ -210,11 +239,6 @@ public class Player {
                 sellProperty(toSell);
             }           
         }
-
-        subBal(cost);
-        System.out.println(toStringWithDetails() + " RENT " + property.name + " $" + cost);
-        property.owner.addBal(cost);
-        System.out.println(property.owner.toString() + ": COLLECT " + property.name + " $" + cost);
     }
 
     public void changeNumOfRailRoads(int change){
