@@ -14,7 +14,7 @@ public class AskInput extends JFrame {
 
     public AskInput(String title, String[] buttons, Game game) {
         setTitle(title);
-        setSize(300, 60);
+        setSize(300, 40);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 

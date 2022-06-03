@@ -43,13 +43,57 @@ public class Board {
             new Property("Park Place", 350, 175, 200, new int[] {35, 175, 500, 1100, 1300, 1500}, false, false, false, false, true),
             new Property("Tax", false, false, false, false, false),
             new Property("Boardwalk", 400, 200, 200, new int[] {50, 200, 600, 1400, 1700, 2000}, false, false, false, false, true),
-            
-
-
-
-
         };
     }
+
+    public int findProperty(String name, int pos) {
+        if (name.equals("Railroad")) {
+            return findNearestRailroad(pos);
+        } else if (name.equals("Utility")) {
+            return findNearestUtility(pos);
+        }
+        for (int i=0; i < board.length; i++) {
+            if (board[i].name.equalsIgnoreCase(name)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int findNearestRailroad(int pos) {
+        for (int i=0; i < board.length * 2; i++) {
+            int check;
+            if (i % 2 == 0) {
+                check = -i/2;
+            } else {
+                check = i/2;
+            }
+            check += pos + board.length;
+            check %= board.length;
+            if (board[check].isRailroad) {
+                return check;
+            }
+        }
+        return -1;
+    }
+
+    private int findNearestUtility(int pos) {
+        for (int i=0; i < board.length * 2; i++) {
+            int check;
+            if (i % 2 == 0) {
+                check = -i/2;
+            } else {
+                check = i/2;
+            }
+            check += pos + board.length;
+            check %= board.length;
+            if (board[check].isUtility) {
+                return check;
+            }
+        }
+        return -1;
+    }
+
     // public void changeOwned(){
     //     if(getProperty(currentPlayer.position).owned == false){
     //         board[currentPlayer.position].owned = true;
@@ -57,9 +101,7 @@ public class Board {
     //     }
 
     // }
-
-    
-    // public void changeNumHouses(int ){
+    // public void changeNumHouses(){
     //     if(board[currentPlayer.position].houses < 5){
     //         board[currentPlayer.position].houses += 1;
     //     }

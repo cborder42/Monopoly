@@ -2,18 +2,36 @@ import java.awt.*;
 import java.awt.Font;
 import java.awt.geom.*;
 import java.util.ArrayList;
-import java.awt.Graphics; 
+import java.awt.Graphics;
+import java.awt.font.FontRenderContext; 
 
 public class DisplayGraphics extends Canvas {
 
-public ArrayList<Player> players = new ArrayList<Player>();
+private static Rectangle[] cardRectangles = new Rectangle[]
+{
+    new Rectangle(0+300-130, 0+300-60, 260, 120),
+    new Rectangle(870-300-130, 870-300-60, 260, 120)
+};
+
+private ArrayList<Player> players = new ArrayList<Player>();
+
+public String[] cards = new String[] {
+    "CHANCE",
+    "COMMUNITY CHEST"
+};
 
 public void setPlayers(ArrayList<Player> players) {
     this.players = players;
 }
 
-public void paint(Graphics g) {
+public void setCard(String card, boolean isChance) {
+    int type = isChance ? 0 : 1;
+    cards[type] = card;
+    Rectangle r = cardRectangles[type];
+    repaint(r.x, r.y, r.width, r.height);
+}
 
+public void paint(Graphics g) {
 
 Font f1 = new Font("GO SIGN",1,70); 
 Font f2 = new Font("IN JAIL", 1,30);
@@ -375,10 +393,23 @@ AffineTransform transform = new AffineTransform();
 transform.rotate(Math.toRadians(-45), 0, 0);
 g.setFont(f6.deriveFont(transform));
 g.setColor(Color.BLACK);
-g.drawString("MONOPOLY", 200, 595);
+g.drawString("MONOPOLY", 270, 645);
 g.setColor(Color.WHITE);
-g.drawString("MONOPOLY", 205, 600);
+g.drawString("MONOPOLY", 275, 645);
 transform.rotate(Math.toRadians(45), 0, 0);
+
+for (Rectangle r: cardRectangles) {
+    g.setColor(Color.WHITE);
+    g.fillRect(r.x, r.y, r.width, r.height);
+    g.setColor(Color.BLACK);
+    g.drawRect(r.x, r.y, r.width, r.height);
+}
+
+for (int i=0; i<2; i++) {
+    Rectangle r = cardRectangles[i];
+    g.setFont(f3);
+    g.drawString(cards[i], r.x+10, r.y+50);
+}
 
 // Paint the players
 
