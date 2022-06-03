@@ -390,12 +390,12 @@ g.fillPolygon(redPoly);
 g.setColor(Color.BLACK);
 g.drawPolygon(redPoly);
 AffineTransform transform = new AffineTransform();
-transform.rotate(Math.toRadians(-45), 0, 0);
+transform.rotate(Math.toRadians(-45), 280, 640);
 g.setFont(f6.deriveFont(transform));
 g.setColor(Color.BLACK);
 g.drawString("MONOPOLY", 270, 645);
 g.setColor(Color.WHITE);
-g.drawString("MONOPOLY", 275, 645);
+g.drawString("MONOPOLY", 275, 630);
 transform.rotate(Math.toRadians(45), 0, 0);
 
 for (Rectangle r: cardRectangles) {

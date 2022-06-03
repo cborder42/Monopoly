@@ -7,6 +7,7 @@ This is the final AP CS project for 2021-2022 at the Overlake School. Team membe
 - Brian H
 - Kaustav M
 - Rishi M
+- Augustina H
 
 ## Running
 
