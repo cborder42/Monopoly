@@ -31,6 +31,11 @@ public void setCard(String card, boolean isChance) {
     repaint(r.x, r.y, r.width, r.height);
 }
 
+// Adding this in DisplayGraphics.java.
+
+public void update(Graphics g) {
+    paint(g);
+}  
 public void paint(Graphics g) {
 
 Font f1 = new Font("GO SIGN",1,70); 
@@ -382,21 +387,20 @@ g.drawString("JAIL", 42, 805);
 g.setFont(f3);
 g.drawString("VISITING", 30, 865);
 
-Polygon redPoly = new Polygon(new int[]{ 0+240-40  , 870-240-40, 870-240+40, 0+240+40  },
+Polygon redPoly = new Polygon(new int[]{ 0+240-40  , 870-240-40, 870-240+40, 0+240+40  }, 
                               new int[]{ 870-240-40, 0+240-40  , 0+240+40  , 870-240+40},
                               4);
-g.setColor(Color.RED);
-g.fillPolygon(redPoly);
-g.setColor(Color.BLACK);
-g.drawPolygon(redPoly);
+
 AffineTransform transform = new AffineTransform();
-transform.rotate(Math.toRadians(-45), 280, 640);
-g.setFont(f6.deriveFont(transform));
+transform.rotate(Math.toRadians(-45), 0, 0);
+g.setColor(Color.RED);
+g.fillRect((870-550)/2, (870-100)/2, 550, 100);
+g.setFont(f6);
 g.setColor(Color.BLACK);
-g.drawString("MONOPOLY", 270, 645);
+g.drawString("MONOPOLY", (870-550)/2+10, (870-100)/2+80);
 g.setColor(Color.WHITE);
-g.drawString("MONOPOLY", 275, 630);
-transform.rotate(Math.toRadians(45), 0, 0);
+g.drawString("MONOPOLY", (870-550)/2+14, (870-100)/2+80+4);
+
 
 for (Rectangle r: cardRectangles) {
     g.setColor(Color.WHITE);
