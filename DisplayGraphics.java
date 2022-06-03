@@ -375,9 +375,9 @@ AffineTransform transform = new AffineTransform();
 transform.rotate(Math.toRadians(-45), 0, 0);
 g.setFont(f6.deriveFont(transform));
 g.setColor(Color.BLACK);
-g.drawString("MONOPOLY", 270, 645);
+g.drawString("MONOPOLY", 200, 595);
 g.setColor(Color.WHITE);
-g.drawString("MONOPOLY", 275, 645);
+g.drawString("MONOPOLY", 205, 600);
 transform.rotate(Math.toRadians(45), 0, 0);
 
 // Paint the players
