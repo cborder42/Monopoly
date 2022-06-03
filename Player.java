@@ -96,7 +96,7 @@ public class Player {
                 System.out.println(toStringWithDetails() + " Getting out of jail because of double.");
                 turnsInJail = 0;
             } else if (turnsInJail < 2) {
-                if (!askBuy(toString() + " pay $50 fine?")){
+                if (!askBuy("Pay $50 fine?")){
                     turnsInJail++;
                     System.out.println(toStringWithDetails() + " missing turn #" + turnsInJail);
                     return;
@@ -114,13 +114,13 @@ public class Player {
 
         int oldPos = getPos();
         Board board = game.getBoard();
-        DisplayGraphics graphics = game.getGraphics();
         for (int i = 0; i < dice; i++) {
             setPos((pos + 1) % board.getTotalSpaces());
             game.delay(false);
         }
 
         // Repaint current balance area.
+        DisplayGraphics graphics = game.getGraphics();
         graphics.repaint(650, 630, 80, 100);
 
         // Each time a player's token lands on or passes over GO, whether by throwing the dice or drawing a card, the Banker pays that player a $200 salary.
@@ -223,7 +223,8 @@ public class Player {
     private void payRentOnProperty(Property property) {
         // Pay rent!!!
         int cost = property.isProperty ? property.getPayment() :
-                    property.isRailroad ? property.getRailroadPayment() : 0;
+                   property.isUtility ? property.getPayment() :
+                   property.isRailroad ? property.getRailroadPayment() : 0;
         subBal(cost);
         System.out.println(toStringWithDetails() + " RENT " + property.name + " $" + cost);
         property.owner.addBal(cost);

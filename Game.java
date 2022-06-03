@@ -30,6 +30,7 @@ public class Game{
         frame.setVisible(true);
 
         frame.setFocusable(true);
+        //from web (https://stackoverflow.com/questions/8498147/addkeylistener-doesnt-work-for-jpanel#:~:text=panel.addKeyListener(new%20KeyListener()%20%7B) 
         frame.addKeyListener(new KeyListener() {
             public void keyTyped(KeyEvent e) {
                 char key = e.getKeyChar();
@@ -82,6 +83,7 @@ public class Game{
                 System.out.println(player.toString() + ": turn #" + (tries+1) + " rolled " + dice1 + "+" + dice2);
                 player.makeMove(dice1 + dice2, isDouble);
                 
+                //from web (https://stackoverflow.com/questions/8498147/addkeylistener-doesnt-work-for-jpanel#:~:text=setFocusable(true)%3B-,panel.requestFocusInWindow()%3B,-Here%27s%20a%20SSCCE) 
                 frame.requestFocusInWindow();
                 delay(true);
 
@@ -100,6 +102,7 @@ public class Game{
     }
 
     public void delay(boolean extended) {
+        //VS Code added this wrapper
         try {
             Thread.sleep(extended ? sleepTime : sleepTime/30);
         } catch (InterruptedException e) {
