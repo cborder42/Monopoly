@@ -1,5 +1,4 @@
-// Kaustav Mitra
-// Player class to keep track of a player in the game.
+import java.util.HashMap;
 import java.awt.*;
 
 public class Player {
@@ -8,22 +7,28 @@ public class Player {
     private int pos; 
     private int numOfRailroads; 
     private int numOfUtilitiesOwned;
+    public boolean active;
+    public boolean isInJail;
+    public int turnsInJail;
     private Game game;
-    private boolean auto = false;
-    private int turnsInJail = 0;
+    public HashMap<String, Boolean> ownedSets; //Add entry only if player has accumulated a set
 
-    public Player(int id, Game game){
+    public Player(int playerId, Game gameInstance){
         //each player starts with $1500
-        this.id = id;
-        this.game = game;
         bal = 1500;
-        pos = 0;
+        pos = 0; 
+        isInJail = false;
+        turnsInJail = 0;
+        active = true;
+        id = playerId;
+        game = gameInstance;
+        ownedSets = new HashMap<String, Boolean>();
     }
 
+    
     public int getId() {
         return id;
     }
-
     public int getBal(){
         return bal;
     }
@@ -35,20 +40,38 @@ public class Player {
 
     // will affect the balance, decreasing the amount of money available to the player based on their actions
     public void subBal(int change){
-        ensureBalance(change);
         bal -= change;
+    }
+
+    public void sendToJail(){
+        isInJail = true;
+        setPos(Board.jailPos); 
+    }
+    public void exitJail(){
+        isInJail = false;
+        turnsInJail = 0;
     }
 
     // Will tell the user if they can pay the charged price 
     public boolean getCanPay(int price){
-        return bal >= price;
+        if (bal >= price){
+            return true;
+        }
+        return false;
     }
 
     public int getPos(){
         return pos; 
     }
 
-    public void setPos(int newPos) {
+
+    public int changePos(int dice){
+        pos += dice;
+        pos %= 40;
+        return pos;
+    }
+
+    public void setPos(int newPos){
         Point loc = getLocation();
         pos = newPos;
         Point newloc = getLocation();
@@ -89,159 +112,6 @@ public class Player {
         return new Point(x, y);
     }
 
-    // Move dice positions forward
-    public void makeMove(int dice, boolean isDouble){
-        if (pos == Board.jailPos) {
-            if (isDouble) {
-                System.out.println(toStringWithDetails() + " Getting out of jail because of double.");
-                turnsInJail = 0;
-            } else if (turnsInJail < 2) {
-                if (!askBuy("Pay $50 fine?")){
-                    turnsInJail++;
-                    System.out.println(toStringWithDetails() + " missing turn #" + turnsInJail);
-                    return;
-                } else {
-                    subBal(50);
-                    System.out.println(toStringWithDetails() + " exiting jail with paying $50.");
-                    turnsInJail = 0;
-                }
-            } else {
-                subBal(50);
-                System.out.println(toStringWithDetails() + " exiting jail with paying $50.");
-                turnsInJail = 0;
-            }
-        }
-
-        int oldPos = getPos();
-        Board board = game.getBoard();
-        for (int i = 0; i < dice; i++) {
-            setPos((pos + 1) % board.getTotalSpaces());
-            game.delay(false);
-        }
-
-        // Repaint current balance area.
-        DisplayGraphics graphics = game.getGraphics();
-        graphics.repaint(650, 630, 80, 100);
-
-        // Each time a player's token lands on or passes over GO, whether by throwing the dice or drawing a card, the Banker pays that player a $200 salary.
-        if (board.didPassGo(oldPos, pos)) {
-            addBal(200);
-            System.out.println(this.toStringWithDetails() + " GO $200 added.");
-        }
-
-        // get property at the new position
-        Property property = board.getProperty(pos);
-        processProperty(property);
-    }
-
-    private void processProperty(Property property) {
-        if (property.owner == null) {
-            buyProperty(property);
-        } else if (property.owner != this) {
-            payRentOnProperty(property);
-        } else if (property.owner == this && property.isProperty && property.houses < property.rents.length - 1) {
-            // Check if interested in building
-            int cost = property.houseCost;
-            if (cost > 0 && getCanPay(cost)) {
-                if (!askBuy("Build")) {
-                    return;
-                }
-                property.houses++;
-                subBal(cost);
-            }            
-        }
-    }
-
-    private boolean askBuy(String transaction) {
-        if (auto) {
-            return true;
-        }
-
-        String choice = new AskInput(toString(), new String[]{transaction, "Skip", "Auto"}, game).getSelection();
-        auto = choice.equals("Auto");
-        if (choice.equals("Skip")) {
-            return false;
-        }
-        return true;
-    }
-
-    private void buyProperty(Property property) {
-        // Check if interested in buying
-        int cost = property.cost;
-        if (cost > 0 && getCanPay(cost)) {
-            if (!askBuy("Buy")) {
-                return;
-            }
-            property.owner = this;
-            property.owned = true; // Replace to false if mortgage is supported
-            subBal(cost);
-            System.out.println(toStringWithDetails() + " BUY " + property.name + " for $" + cost);
-            if (property.isUtility) {
-                this.numOfUtilitiesOwned++;
-            } else if (property.isRailroad) {
-                this.numOfRailroads++;
-            }
-        } else if (property.name.equals("Tax")) {
-            // pay 200 tax
-            subBal(200);
-            System.out.println(this.toStringWithDetails() + " Tax $200");
-        } else if (property.name.equals("Go To Jail")) {
-            System.out.println(toStringWithDetails() + " JAIL");
-            setPos(Board.jailPos);
-        } else if (property.name.equals("Jail")){
-            System.out.println(this.toStringWithDetails() + " JAIL");
-        } else if (property.isChance || property.isCommunityChest) {
-            Chance card = game.cards.advanceCard(property.isChance);
-            game.getGraphics().setCard(card.getName(), property.isChance);
-            System.out.println(toStringWithDetails() + " " + card.toString());
-            
-            addBal(card.getMoney());
-            String where = card.getWhere();
-            if (where != null) {
-                int pos = game.getBoard().findProperty(where, getPos());
-                if (pos != -1) {
-                    setPos(pos);
-                    buyProperty(game.getBoard().getProperty(pos));
-                }
-            }
-        }
-    }
-
-    private void sellProperty(Property property) {
-        int recoup = property.cost;
-        if (property.houses > 0) {
-            recoup += property.houses * property.houseCost;
-        }
-
-        addBal(recoup/2);
-        System.out.println(toStringWithDetails() + " SELL " + property.name + " for $" + recoup/2);
-        property.owned = false;
-        property.owner = null;
-        property.houses = 0;
-    }
-
-    private void payRentOnProperty(Property property) {
-        // Pay rent!!!
-        int cost = property.isProperty ? property.getPayment() :
-                   property.isUtility ? property.getPayment() :
-                   property.isRailroad ? property.getRailroadPayment() : 0;
-        subBal(cost);
-        System.out.println(toStringWithDetails() + " RENT " + property.name + " $" + cost);
-        property.owner.addBal(cost);
-        System.out.println(property.owner.toString() + ": COLLECT " + property.name + " $" + cost);
-    }
-
-    // Sell properties to gather enough money.
-    private void ensureBalance(int cost) {
-        Board board = game.getBoard();
-        for (int i=0; i < board.getTotalSpaces() && cost > bal; i++) {
-            Property toSell = board.getProperty(i);
-            if (toSell.owner == this) {
-                sellProperty(toSell);
-            }           
-        }
-    }
-
     public void changeNumOfRailRoads(int change){
         numOfRailroads += change; 
     }
@@ -258,11 +128,15 @@ public class Player {
         return numOfUtilitiesOwned;
     }
 
-    public String toString(){
-        return "Player " + (id+1);
+    //status if game is lost 
+    public boolean getLost(){
+        if (bal <= 0){
+            return true;
+        }
+        return false;
     }
 
-    public String toStringWithDetails(){
-        return "Player " + (id+1) + ": @" + pos + " $" + bal;
+    public String toString(){
+        return "Player " + id + " ";
     }
 }
