@@ -3,6 +3,7 @@
 import java.awt.*;
 
 public class Player {
+    private static Color[] colors = new Color[] { Color.decode("#FF8A8A"), Color.GREEN, Color.BLUE, Color.MAGENTA };
     private int id;
     private int bal; 
     private int pos; 
@@ -22,6 +23,10 @@ public class Player {
 
     public int getId() {
         return id;
+    }
+
+    public Color getColor() {
+        return colors[id % colors.length];
     }
 
     public int getBal(){
@@ -57,36 +62,11 @@ public class Player {
     }
 
     public Point getLocation() {
-        int major = pos / 10;
-        int minor = pos % 10;
-
-        // Additional offset for the large corners.
-        int additional = 70 * minor;
-        if (minor > 0) {
-            additional += 25;
-        }
-
-        int x;
-        int y;
-        if (major == 0) {
-            x = 750+120/2 - additional;
-            y = 750+120/2;
-        } else if (major == 1) {
-            x = 120/2;
-            y = 750+120/2 - additional;
-        } else if (major == 2) {
-            x = 120/2 + additional;
-            y = 120/2;
-        } else {
-            x = 750+120/2;
-            y = 120/2 + additional;
-        }
+        Point point = game.getBoard().getLocation(pos);
 
         // Non-overlap for users.
-        x -= 10 * (id % 2) + 10;
-        y -= 10 * (id / 2) + 10;
-
-        return new Point(x, y);
+        point.translate(-10 * (id % 2) - 10, -10 * (id / 2) - 10);
+        return point;
     }
 
     // Move dice positions forward
@@ -147,8 +127,10 @@ public class Player {
                     return;
                 }
                 property.houses++;
+                //Whenever a house is bought or sold the graphics are updated
+                game.getGraphics().updateProperty(property.position);
                 subBal(cost);
-            }            
+            }         
         }
     }
 
@@ -174,6 +156,7 @@ public class Player {
             }
             property.owner = this;
             property.owned = true; // Replace to false if mortgage is supported
+            game.getGraphics().updateProperty(property.position);
             subBal(cost);
             System.out.println(toStringWithDetails() + " BUY " + property.name + " for $" + cost);
             if (property.isUtility) {
@@ -218,6 +201,7 @@ public class Player {
         property.owned = false;
         property.owner = null;
         property.houses = 0;
+        game.getGraphics().updateProperty(property.position);
     }
 
     private void payRentOnProperty(Property property) {

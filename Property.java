@@ -1,5 +1,6 @@
 public class Property {
     // member variables
+    public int position;
     public String name;
     public int cost;
     public int houses;
@@ -15,9 +16,6 @@ public class Property {
     public boolean isProperty; 
     public int[] rents = new int[6];
     public int[] railroadRent = new int[4];
-    
-
-    
 
     //constructor
     public Property(String propertyName, int propertyCost, int propertyMortgage, int propertyHouseCost, int[] propertyRents, boolean isChanceProperty, boolean isCommunityChestProperty, boolean isRailroadProperty, boolean isUtilityProperty, boolean isAProperty){

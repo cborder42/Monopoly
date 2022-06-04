@@ -21,7 +21,7 @@ public class Game{
     }
 
     public Game() {
-        graphics = new DisplayGraphics();
+        graphics = new DisplayGraphics(this);
         frame = new JFrame();
         frame.add(graphics);
         frame.setUndecorated(true);
@@ -56,7 +56,6 @@ public class Game{
         });
 
         setupPlayers();
-        graphics.setPlayers(listOfPlayers);
     }
 
     public int rollDice() {
@@ -69,6 +68,10 @@ public class Game{
 
     public Board getBoard() {
         return board;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return listOfPlayers;
     }
     
     public void simulation() {

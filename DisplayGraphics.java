@@ -1,27 +1,32 @@
 import java.awt.*;
 import java.awt.Font;
 import java.awt.geom.*;
-import java.util.ArrayList;
 import java.awt.Graphics;
-import java.awt.font.FontRenderContext; 
 
 public class DisplayGraphics extends Canvas {
 
+private static Font f1 = new Font("GO SIGN",1,70); 
+private static Font f2 = new Font("IN JAIL", 1,30);
+private static Font f3 = new Font("VISITING", 1,15);
+private static Font f4 = new Font("side squares", 1,10);
+private static Font f5 = new Font("INCOME TAX", 1, 15);
+private static Font f6 = new Font("TITLE", 1, 90);
+
 private static Rectangle[] cardRectangles = new Rectangle[]
 {
-    new Rectangle(0+300-130, 0+300-60, 260, 120),
-    new Rectangle(870-300-130, 870-300-60, 260, 120)
+    new Rectangle(0+300-130, 0+300-50, 260, 100),
+    new Rectangle(870-300-130, 870-300-50, 260, 100)
 };
 
-private ArrayList<Player> players = new ArrayList<Player>();
+private Game game;
 
 public String[] cards = new String[] {
     "CHANCE",
     "COMMUNITY CHEST"
 };
 
-public void setPlayers(ArrayList<Player> players) {
-    this.players = players;
+public DisplayGraphics(Game game) {
+    this.game = game;
 }
 
 public void setCard(String card, boolean isChance) {
@@ -31,21 +36,22 @@ public void setCard(String card, boolean isChance) {
     repaint(r.x, r.y, r.width, r.height);
 }
 
-// Adding this in DisplayGraphics.java.
+public void updateProperty(int pos) {
+    Board board = game.getBoard();
+    Point location = board.getLocation(pos);
+    repaint(location.x - 60, location.y - 60, 120, 120);
+}
 
 public void update(Graphics g) {
     paint(g);
-}  
+}
+
 public void paint(Graphics g) {
 
-Font f1 = new Font("GO SIGN",1,70); 
-Font f2 = new Font("IN JAIL", 1,30);
-Font f3 = new Font("VISITING", 1,15);
-Font f4 = new Font("side squares", 1,10);
-Font f5 = new Font("INCOME TAX", 1, 15);
-Font f6 = new Font("TITLE", 1, 90);
-
-setBackground(Color.WHITE);
+//Antialiasing the text.
+((Graphics2D)g).setRenderingHint(
+    RenderingHints.KEY_TEXT_ANTIALIASING,
+    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);setBackground(Color.WHITE);
 
 setForeground(Color.BLACK);
 
@@ -374,9 +380,6 @@ g.drawString("RANEAN", 693, 800);
 g.drawString("AVENUE", 693, 810);
 g.drawString("$60", 708, 865);
 
-
-
-
 g.setColor(Color.BLACK);
 g.drawRect(0, 750, 120, 120); // bottom left corner 
 g.drawRect(30,750,90,90);
@@ -387,20 +390,21 @@ g.drawString("JAIL", 42, 805);
 g.setFont(f3);
 g.drawString("VISITING", 30, 865);
 
-Polygon redPoly = new Polygon(new int[]{ 0+240-40  , 870-240-40, 870-240+40, 0+240+40  }, 
+Polygon redPoly = new Polygon(new int[]{ 0+240-40  , 870-240-40, 870-240+40, 0+240+40  },
                               new int[]{ 870-240-40, 0+240-40  , 0+240+40  , 870-240+40},
                               4);
-
-AffineTransform transform = new AffineTransform();
-transform.rotate(Math.toRadians(-45), 0, 0);
 g.setColor(Color.RED);
-g.fillRect((870-550)/2, (870-100)/2, 550, 100);
-g.setFont(f6);
+g.fillPolygon(redPoly);
 g.setColor(Color.BLACK);
-g.drawString("MONOPOLY", (870-550)/2+10, (870-100)/2+80);
+g.drawPolygon(redPoly);
+AffineTransform transform = new AffineTransform();
+transform.rotate(Math.toRadians(-45), 280, 640);
+g.setFont(f6.deriveFont(transform));
+g.setColor(Color.BLACK);
+g.drawString("MONOPOLY", 270, 645);
 g.setColor(Color.WHITE);
-g.drawString("MONOPOLY", (870-550)/2+14, (870-100)/2+80+4);
-
+g.drawString("MONOPOLY", 275, 630);
+transform.rotate(Math.toRadians(45), 0, 0);
 
 for (Rectangle r: cardRectangles) {
     g.setColor(Color.WHITE);
@@ -411,6 +415,7 @@ for (Rectangle r: cardRectangles) {
 
 for (int i=0; i<2; i++) {
     Rectangle r = cardRectangles[i];
+    g.setColor(Color.DARK_GRAY);
     g.setFont(f3);
     g.drawString(cards[i], r.x+10, r.y+50);
 }
@@ -418,21 +423,18 @@ for (int i=0; i<2; i++) {
 // Paint the players
 
 int i = 0;
-for(Player player : players) {
+for(Player player : game.getPlayers()) {
     int bal = player.getBal();
     if (bal > 0) {
         Point p = player.getLocation();
+        g.setColor(player.getColor());
         if (i == 0) {
-            g.setColor(Color.decode("#FF8A8A"));
             g.fillOval(p.x, p.y,30,20);
         } else if (i== 1) {
-            g.setColor(Color.GREEN);
             g.fillOval(p.x, p.y, 20, 20);
         } else if (i == 2) {
-            g.setColor(Color.BLUE);
             g.fillRect(p.x, p.y, 20, 20);
         } else {
-            g.setColor(Color.MAGENTA);
             g.fillRect(p.x, p.y,20,30);
         }
 
@@ -440,6 +442,24 @@ for(Player player : players) {
         g.drawString(player.toString() + ": $" + bal, 650, 650 + i*20);
     }
     i++;
+}
+
+// Paint the buildings
+g.setFont(f5);
+Board board = game.getBoard();
+int pos = 0;
+for(Property property : board.board) {
+    Player player = property.owner;
+    if (player != null) {
+        String display = property.houses == 0 ? "✓" :
+                         property.houses == property.rents.length - 1 ? "🏛" :
+                         "🏠".repeat(property.houses);
+        Point location = board.getLocation(pos);
+        location.translate(-30, 20);
+        g.setColor(player.getColor());
+        g.drawString(display, location.x, location.y);
+    }
+    pos++;
 }
 
 }

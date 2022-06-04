@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Board {
     public static int jailPos = 10;
     public Property[] board; 
@@ -44,6 +46,9 @@ public class Board {
             new Property("Tax", false, false, false, false, false),
             new Property("Boardwalk", 400, 200, 200, new int[] {50, 200, 600, 1400, 1700, 2000}, false, false, false, false, true),
         };
+        for (int i=0; i < board.length; i++) {
+            board[i].position = i;
+        }
     }
 
     public int findProperty(String name, int pos) {
@@ -94,20 +99,6 @@ public class Board {
         return -1;
     }
 
-    // public void changeOwned(){
-    //     if(getProperty(currentPlayer.position).owned == false){
-    //         board[currentPlayer.position].owned = true;
-    //         board[currentPlayer.position].ownerIndex = currentPlayer.index;
-    //     }
-
-    // }
-    // public void changeNumHouses(){
-    //     if(board[currentPlayer.position].houses < 5){
-    //         board[currentPlayer.position].houses += 1;
-    //     }
-        
-    // }
-
     public Property[] getBoard(){
         return board;
     }
@@ -124,5 +115,34 @@ public class Board {
         else{
             return false;
         }
+    }
+
+    public Point getLocation(int pos) {
+        int major = pos / 10;
+        int minor = pos % 10;
+
+        // Additional offset for the large corners.
+        int additional = 70 * minor;
+        if (minor > 0) {
+            additional += 25;
+        }
+
+        int x;
+        int y;
+        if (major == 0) {
+            x = 750+120/2 - additional;
+            y = 750+120/2;
+        } else if (major == 1) {
+            x = 120/2;
+            y = 750+120/2 - additional;
+        } else if (major == 2) {
+            x = 120/2 + additional;
+            y = 120/2;
+        } else {
+            x = 750+120/2;
+            y = 120/2 + additional;
+        }
+
+        return new Point(x, y);
     }
 }
