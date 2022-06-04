@@ -398,12 +398,13 @@ g.fillPolygon(redPoly);
 g.setColor(Color.BLACK);
 g.drawPolygon(redPoly);
 AffineTransform transform = new AffineTransform();
-transform.rotate(Math.toRadians(-45), 280, 640);
+transform.translate(280-15, 640+10);
+transform.rotate(Math.toRadians(-45), 0, 0);
 g.setFont(f6.deriveFont(transform));
 g.setColor(Color.BLACK);
-g.drawString("MONOPOLY", 270, 645);
+g.drawString("MONOPOLY", 0, 0);
 g.setColor(Color.WHITE);
-g.drawString("MONOPOLY", 275, 630);
+g.drawString("MONOPOLY",15, 0);
 transform.rotate(Math.toRadians(45), 0, 0);
 
 for (Rectangle r: cardRectangles) {
@@ -447,19 +448,17 @@ for(Player player : game.getPlayers()) {
 // Paint the buildings
 g.setFont(f5);
 Board board = game.getBoard();
-int pos = 0;
 for(Property property : board.board) {
     Player player = property.owner;
     if (player != null) {
         String display = property.houses == 0 ? "✓" :
                          property.houses == property.rents.length - 1 ? "🏛" :
                          "🏠".repeat(property.houses);
-        Point location = board.getLocation(pos);
+        Point location = board.getLocation(property.position);
         location.translate(-30, 20);
         g.setColor(player.getColor());
         g.drawString(display, location.x, location.y);
     }
-    pos++;
 }
 
 }

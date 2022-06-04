@@ -6,7 +6,6 @@ public class Property {
     public int houses;
     public int mortgage;
     public int houseCost;
-    public int ownerIndex;
     public Player owner;
     public boolean owned;
     public boolean isChance;
@@ -24,11 +23,9 @@ public class Property {
         houses = 0;
         mortgage = propertyMortgage;
         houseCost = propertyHouseCost;
-        ownerIndex = -1;
         owned = false;
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
-        ownerIndex = -1;
         owner = null;
         isProperty = isAProperty;
         isRailroad = isRailroadProperty;
@@ -52,7 +49,6 @@ public class Property {
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
         mortgage = railroadMortgage;
-        ownerIndex = -1;
         isProperty = isAProperty;
         railroadRent = railroadRents.clone();
         isRailroad = isRailroadProperty;
@@ -65,7 +61,6 @@ public class Property {
         isChance = isChanceProperty;
         isCommunityChest = isCommunityChestProperty;
         isUtility = isUtilityProperty;
-        ownerIndex = -1;
         isProperty = isAProperty;
         isRailroad = isRailroadProperty;
         mortgage = utilityMortgage;
@@ -99,19 +94,10 @@ public class Property {
         }
     }
 
-    public void changeOwned(int playerIndex){
-        owned = true;
-        ownerIndex = playerIndex;
-    }
-
     public String toString(){
         String propertyDetails = "Name: " + name +  " | Cost: " + cost +  " | Mortgage: " + mortgage + " | Houses: " + houses + " | House cost: " + houseCost + " | Rent with 0 houses: " + rents[0] + " | Rent with 1 house: " + rents[1]+ " | Rent with 2 houses: " + rents[2] + " | Rent with 3 houses: " + rents[3] + " | Rent with 4 houses: " + rents[4] + " | Rent with a hotel: " + rents[5] + " | Is owned: " + owned + " | Is community chest: " + isCommunityChest + " | Is chance: " + isChance; 
-        if (owned){
-            propertyDetails += "Property owner: Player " + ownerIndex;
-        }
         return propertyDetails;
     }
-    
 }
 
 
